@@ -3,7 +3,17 @@
   "$id": "https://raw.githubusercontent.com/pri8771/iOS_app_factory_rules/main/schemas/project-context.schema.json",
   "title": "App Factory Project Context",
   "type": "object",
-  "required": ["projectName", "projectType", "lifecycleStatus", "platforms", "registeredAt", "existingCodeBaselineRequired", "constraints", "requiredReading"],
+  "required": [
+    "projectName",
+    "projectType",
+    "lifecycleStatus",
+    "platforms",
+    "registeredAt",
+    "existingCodeBaselineRequired",
+    "constraints",
+    "agentEntryPoints",
+    "requiredReading"
+  ],
   "properties": {
     "$schema": {"type": "string"},
     "projectName": {"type": "string", "minLength": 1},
@@ -20,6 +30,19 @@
         "localFirst": {"type": "boolean"},
         "backendAllowed": {"type": "boolean"},
         "thirdPartyDependenciesAllowed": {"type": "boolean"}
+      },
+      "additionalProperties": true
+    },
+    "agentEntryPoints": {
+      "type": "object",
+      "required": ["generic", "canonicalLocalRules"],
+      "properties": {
+        "generic": {"type": "string"},
+        "claudeCode": {"type": "string"},
+        "gemini": {"type": "string"},
+        "cursor": {"type": "string"},
+        "githubCopilot": {"type": "string"},
+        "canonicalLocalRules": {"type": "string"}
       },
       "additionalProperties": true
     },
