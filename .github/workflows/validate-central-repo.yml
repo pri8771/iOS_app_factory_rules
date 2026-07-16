@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Parse JSON files
         run: |
           python3 - <<'PY'
@@ -19,10 +20,13 @@ jobs:
               json.loads(path.read_text())
               print(f'valid json: {path}')
           PY
+
       - name: Validate shell syntax
         run: |
           bash -n scripts/bootstrap-project.sh
           bash -n scripts/verify-project-registration.sh
+          bash -n tests/test-bootstrap.sh
+
       - name: Verify required central files
         run: |
           test -f VERSION
@@ -30,4 +34,12 @@ jobs:
           test -f governance/DEFINITION_OF_DONE.md
           test -f standards/quality/VIBE_CODING_QUALITY_RULEBOOK.md
           test -f templates/project/.factory/project-context.json
+          test -f templates/project/AGENTS.md
+          test -f templates/project/CLAUDE.md
+          test -f templates/project/GEMINI.md
+          test -f templates/project/.cursor/rules/app-factory.mdc
+          test -f templates/project/.github/copilot-instructions.md
           test -f schemas/project-context.schema.json
+
+      - name: Test new and existing project registration
+        run: bash tests/test-bootstrap.sh
