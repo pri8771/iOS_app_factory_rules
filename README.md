@@ -2,39 +2,59 @@
 
 Central operating system for AI-assisted iOS, iPadOS, macOS, and web application development.
 
-This repository is the canonical source of truth for:
+This repository is the canonical source of truth for studio-wide engineering standards, quality rules, project registration, agent behavior, reusable templates, and verification requirements.
 
-- studio-wide engineering and quality standards;
-- agent behavior and completion reporting;
-- project lifecycle and Definition of Done;
-- reusable project-registration templates;
-- feature contracts, quality manifests, and completion reports;
-- onboarding playbooks for new and existing projects.
+## How an agent recognizes a project
 
-## How projects are recognized
-
-A project is registered with the factory when its repository contains:
+A project is registered when it contains:
 
 ```text
 .factory/project-context.json
 .factory/standard-lock.json
+.factory/AGENTS.factory.md
 quality/quality-manifest.json
 AGENTS.md
 ```
 
-`project-context.json` declares whether the repository is a new project or an existing project being onboarded. Agents must read that file before making changes.
+The `projectType` field in `.factory/project-context.json` is authoritative:
+
+- `new`: a new project being planned or scaffolded;
+- `existing`: an existing codebase being brought under the factory standards.
+
+Agents must read `AGENTS.md` and `.factory/project-context.json` before editing code.
 
 ## Start here
 
-1. Read [`AGENTS.md`](AGENTS.md).
-2. Read [`governance/STUDIO_PRINCIPLES.md`](governance/STUDIO_PRINCIPLES.md).
-3. For a new app, follow [`playbooks/START_NEW_PROJECT.md`](playbooks/START_NEW_PROJECT.md).
-4. For an existing app, follow [`playbooks/REGISTER_EXISTING_PROJECT.md`](playbooks/REGISTER_EXISTING_PROJECT.md).
-5. Use `scripts/bootstrap-project.sh` to install the project-local structure.
+- New project: [`playbooks/START_NEW_PROJECT.md`](playbooks/START_NEW_PROJECT.md)
+- Existing project: [`playbooks/REGISTER_EXISTING_PROJECT.md`](playbooks/REGISTER_EXISTING_PROJECT.md)
+- Agent detection rules: [`playbooks/AGENT_PROJECT_DETECTION.md`](playbooks/AGENT_PROJECT_DETECTION.md)
+- Quality rulebook: [`standards/quality/VIBE_CODING_QUALITY_RULEBOOK.md`](standards/quality/VIBE_CODING_QUALITY_RULEBOOK.md)
+
+## Install into a project
+
+```bash
+./scripts/bootstrap-project.sh \
+  --target /path/to/project \
+  --mode new \
+  --name "My App" \
+  --platforms ios,ipados
+```
+
+For an existing repository:
+
+```bash
+./scripts/bootstrap-project.sh \
+  --target /path/to/project \
+  --mode existing \
+  --name "Existing App" \
+  --platforms ios,macos
+```
+
+The script does not overwrite existing project documents. It adds a small managed block to an existing `AGENTS.md` when necessary.
 
 ## Repository model
 
-This repository contains universal standards. Each application repository contains only its own product documentation, feature contracts, evidence, and a lock to a released version of these standards.
+This repository stores universal standards. Each app repository stores its own product facts, architecture, decisions, contracts, evidence, and a lock to a specific standards version.
 
 ```text
 iOS_app_factory_rules
@@ -43,8 +63,4 @@ iOS_app_factory_rules
         └── Web repository C
 ```
 
-Do not maintain independent copies of the central standards inside every app. Project repositories should contain a small local registration and quality layer that points back here.
-
-## Current standard version
-
-`0.1.0`
+Current standard version: `0.1.0`

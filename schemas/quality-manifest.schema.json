@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/pri8771/iOS_app_factory_rules/main/schemas/quality-manifest.schema.json",
+  "title": "App Factory Quality Manifest",
+  "type": "object",
+  "required": ["application", "requirements", "requiredTestSuites", "qualityStandardVersion"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "application": {
+      "type": "object",
+      "required": ["name", "projectType", "platforms"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "projectType": {"enum": ["new", "existing"]},
+        "platforms": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+      }
+    },
+    "requirements": {"type": "object"},
+    "requiredTestSuites": {"type": "array", "items": {"type": "string"}},
+    "qualityStandardVersion": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": true
+}

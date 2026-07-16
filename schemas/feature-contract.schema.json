@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/pri8771/iOS_app_factory_rules/main/schemas/feature-contract.schema.json",
+  "title": "App Factory Feature Contract",
+  "type": "object",
+  "required": ["id", "name", "status", "userOutcome", "productionDataSource", "states", "errorBehavior", "duplicateProtectionRequired", "persistenceRequired", "acceptanceTests"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "id": {"type": "string", "pattern": "^FEAT-[0-9]+$"},
+    "name": {"type": "string", "minLength": 1},
+    "status": {"type": "string"},
+    "userOutcome": {"type": "string", "minLength": 1},
+    "entryPoints": {"type": "array", "items": {"type": "string"}},
+    "productionDataSource": {"type": "string", "minLength": 1},
+    "states": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "errorBehavior": {"type": "string", "minLength": 1},
+    "duplicateProtectionRequired": {"type": "boolean"},
+    "persistenceRequired": {"type": "boolean"},
+    "layoutScenarios": {"type": "array", "items": {"type": "string"}},
+    "accessibilityRequirements": {"type": "array", "items": {"type": "string"}},
+    "prohibitedBehavior": {"type": "array", "items": {"type": "string"}},
+    "acceptanceTests": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}

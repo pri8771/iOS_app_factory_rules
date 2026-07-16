@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/pri8771/iOS_app_factory_rules/main/schemas/project-context.schema.json",
+  "title": "App Factory Project Context",
+  "type": "object",
+  "required": ["projectName", "projectType", "lifecycleStatus", "platforms", "registeredAt", "existingCodeBaselineRequired", "constraints", "requiredReading"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "projectName": {"type": "string", "minLength": 1},
+    "projectType": {"enum": ["new", "existing"]},
+    "lifecycleStatus": {"type": "string", "minLength": 1},
+    "platforms": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "frameworks": {"type": "array", "items": {"type": "string"}},
+    "registeredAt": {"type": "string", "format": "date"},
+    "existingCodeBaselineRequired": {"type": "boolean"},
+    "constraints": {
+      "type": "object",
+      "required": ["localFirst", "backendAllowed", "thirdPartyDependenciesAllowed"],
+      "properties": {
+        "localFirst": {"type": "boolean"},
+        "backendAllowed": {"type": "boolean"},
+        "thirdPartyDependenciesAllowed": {"type": "boolean"}
+      },
+      "additionalProperties": true
+    },
+    "requiredReading": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}

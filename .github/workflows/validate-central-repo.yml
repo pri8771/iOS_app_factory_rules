@@ -1,0 +1,33 @@
+name: Validate central rules
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse JSON files
+        run: |
+          python3 - <<'PY'
+          import json
+          import pathlib
+          for path in pathlib.Path('.').rglob('*.json'):
+              json.loads(path.read_text())
+              print(f'valid json: {path}')
+          PY
+      - name: Validate shell syntax
+        run: |
+          bash -n scripts/bootstrap-project.sh
+          bash -n scripts/verify-project-registration.sh
+      - name: Verify required central files
+        run: |
+          test -f VERSION
+          test -f AGENTS.md
+          test -f governance/DEFINITION_OF_DONE.md
+          test -f standards/quality/VIBE_CODING_QUALITY_RULEBOOK.md
+          test -f templates/project/.factory/project-context.json
+          test -f schemas/project-context.schema.json

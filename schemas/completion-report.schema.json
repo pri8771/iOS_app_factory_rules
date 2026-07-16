@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/pri8771/iOS_app_factory_rules/main/schemas/completion-report.schema.json",
+  "title": "App Factory Completion Report",
+  "type": "object",
+  "required": ["taskId", "featureId", "status", "implemented", "verification", "checksNotRun", "placeholdersRemaining", "fakeDataUsedInProduction", "knownIssues", "documentationUpdated", "humanReviewRequired"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "taskId": {"type": "string", "minLength": 1},
+    "featureId": {"type": "string", "pattern": "^FEAT-[0-9]+$"},
+    "status": {"enum": ["code_complete", "verification_pending", "verified", "human_review_required", "done"]},
+    "implemented": {"type": "array", "items": {"type": "string"}},
+    "verification": {"type": "array", "items": {"type": "object"}},
+    "checksNotRun": {"type": "array", "items": {"type": "string"}},
+    "placeholdersRemaining": {"type": "array", "items": {"type": "string"}},
+    "fakeDataUsedInProduction": {"type": "boolean"},
+    "knownIssues": {"type": "array", "items": {"type": "string"}},
+    "documentationUpdated": {"type": "array", "items": {"type": "string"}},
+    "humanReviewRequired": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}

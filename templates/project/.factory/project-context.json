@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/pri8771/iOS_app_factory_rules/main/schemas/project-context.schema.json",
+  "projectName": "REPLACE_PROJECT_NAME",
+  "projectType": "new",
+  "lifecycleStatus": "planned",
+  "platforms": ["ios"],
+  "frameworks": [],
+  "registeredAt": "REPLACE_DATE",
+  "existingCodeBaselineRequired": false,
+  "constraints": {
+    "localFirst": true,
+    "backendAllowed": false,
+    "thirdPartyDependenciesAllowed": false
+  },
+  "requiredReading": [
+    "AGENTS.md",
+    ".factory/AGENTS.factory.md",
+    "quality/quality-manifest.json",
+    "docs/STATUS.md",
+    "docs/ARCHITECTURE.md",
+    "docs/BUGS.md",
+    "docs/DECISIONS.md"
+  ]
+}
