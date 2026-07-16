@@ -6,8 +6,9 @@ usage() {
 Usage:
   bootstrap-project.sh --target PATH --mode new|existing --name NAME --platforms csv
 
-Example:
-  ./scripts/bootstrap-project.sh --target ../MyApp --mode existing --name "My App" --platforms ios,macos
+Examples:
+  ./scripts/bootstrap-project.sh --target ../NewApp --mode new --name "New App" --platforms ios,ipados
+  ./scripts/bootstrap-project.sh --target ../ExistingApp --mode existing --name "Existing App" --platforms ios,macos
 EOF
 }
 
@@ -42,7 +43,15 @@ if [[ -f "$TARGET/.factory/project-context.json" ]]; then
   exit 3
 fi
 
-mkdir -p "$TARGET/.factory" "$TARGET/quality/feature-contracts" "$TARGET/quality/completion-reports" "$TARGET/quality/evidence" "$TARGET/quality/waivers" "$TARGET/docs"
+mkdir -p \
+  "$TARGET/.factory" \
+  "$TARGET/.cursor/rules" \
+  "$TARGET/.github" \
+  "$TARGET/quality/feature-contracts" \
+  "$TARGET/quality/completion-reports" \
+  "$TARGET/quality/evidence" \
+  "$TARGET/quality/waivers" \
+  "$TARGET/docs"
 
 cp "$TEMPLATE/.factory/AGENTS.factory.md" "$TARGET/.factory/AGENTS.factory.md"
 cp "$TEMPLATE/quality/evidence/README.md" "$TARGET/quality/evidence/README.md"
@@ -80,6 +89,14 @@ context = {
         "localFirst": True,
         "backendAllowed": False,
         "thirdPartyDependenciesAllowed": False,
+    },
+    "agentEntryPoints": {
+        "generic": "AGENTS.md",
+        "claudeCode": "CLAUDE.md",
+        "gemini": "GEMINI.md",
+        "cursor": ".cursor/rules/app-factory.mdc",
+        "githubCopilot": ".github/copilot-instructions.md",
+        "canonicalLocalRules": ".factory/AGENTS.factory.md",
     },
     "requiredReading": [
         "AGENTS.md",
@@ -121,34 +138,49 @@ for path, value in [
     path.write_text(json.dumps(value, indent=2) + "\n")
 PY
 
-AGENT_BLOCK='<!-- APP-FACTORY:BEGIN -->
+read -r -d '' AGENT_BLOCK <<'EOF' || true
+<!-- APP-FACTORY:BEGIN -->
 ## App Factory Registration
 
 Before editing this repository, read `.factory/project-context.json`, `.factory/AGENTS.factory.md`, `quality/quality-manifest.json`, and the relevant files in `docs/` and `quality/feature-contracts/`.
 
 The `projectType` field is authoritative. Do not mark work done without required evidence.
-<!-- APP-FACTORY:END -->'
+<!-- APP-FACTORY:END -->
+EOF
 
-if [[ ! -e "$TARGET/AGENTS.md" ]]; then
-  cp "$TEMPLATE/AGENTS.md" "$TARGET/AGENTS.md"
-elif ! grep -q '<!-- APP-FACTORY:BEGIN -->' "$TARGET/AGENTS.md"; then
-  printf '\n\n%s\n' "$AGENT_BLOCK" >> "$TARGET/AGENTS.md"
+install_entry_file() {
+  local source="$1"
+  local destination="$2"
+
+  if [[ ! -e "$destination" ]]; then
+    cp "$source" "$destination"
+  elif ! grep -q '<!-- APP-FACTORY:BEGIN -->' "$destination"; then
+    printf '\n\n%s\n' "$AGENT_BLOCK" >> "$destination"
+  fi
+}
+
+install_entry_file "$TEMPLATE/AGENTS.md" "$TARGET/AGENTS.md"
+install_entry_file "$TEMPLATE/CLAUDE.md" "$TARGET/CLAUDE.md"
+install_entry_file "$TEMPLATE/GEMINI.md" "$TARGET/GEMINI.md"
+install_entry_file "$TEMPLATE/.github/copilot-instructions.md" "$TARGET/.github/copilot-instructions.md"
+
+if [[ ! -e "$TARGET/.cursor/rules/app-factory.mdc" ]]; then
+  cp "$TEMPLATE/.cursor/rules/app-factory.mdc" "$TARGET/.cursor/rules/app-factory.mdc"
 fi
 
-# Replace the obvious placeholders in files that were newly installed.
-python3 - "$TARGET" "$NAME" "$MODE" <<'PY'
+# Adjust lifecycle wording only in newly installed starter documents.
+python3 - "$TARGET" "$MODE" <<'PY'
 import pathlib
 import sys
 
 target = pathlib.Path(sys.argv[1])
-name = sys.argv[2]
-mode = sys.argv[3]
-for relative in ["docs/STATUS.md", "docs/FEATURES.md"]:
-    path = target / relative
-    text = path.read_text()
-    text = text.replace("`planned`", "`onboarding_existing`" if mode == "existing" else "`planned`", 1)
-    path.write_text(text)
+mode = sys.argv[2]
+path = target / "docs/STATUS.md"
+text = path.read_text()
+text = text.replace("`planned`", "`onboarding_existing`" if mode == "existing" else "`planned`", 1)
+path.write_text(text)
 PY
 
 echo "Registered $NAME as a $MODE project at $TARGET"
+echo "Installed agent entry points for generic/Codex, Claude Code, Gemini, Cursor, and GitHub Copilot."
 echo "Next: review .factory/project-context.json and quality/quality-manifest.json"
