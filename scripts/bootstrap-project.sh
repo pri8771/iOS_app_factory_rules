@@ -53,9 +53,9 @@ mkdir -p \
   "$TARGET/quality/waivers" \
   "$TARGET/docs"
 
-cp "$TEMPLATE/.factory/AGENTS.factory.md" "$TARGET/.factory/AGENTS.factory.md"
-cp "$TEMPLATE/quality/evidence/README.md" "$TARGET/quality/evidence/README.md"
-cp "$TEMPLATE/quality/waivers/README.md" "$TARGET/quality/waivers/README.md"
+[[ -e "$TARGET/.factory/AGENTS.factory.md" ]] || cp "$TEMPLATE/.factory/AGENTS.factory.md" "$TARGET/.factory/AGENTS.factory.md"
+[[ -e "$TARGET/quality/evidence/README.md" ]] || cp "$TEMPLATE/quality/evidence/README.md" "$TARGET/quality/evidence/README.md"
+[[ -e "$TARGET/quality/waivers/README.md" ]] || cp "$TEMPLATE/quality/waivers/README.md" "$TARGET/quality/waivers/README.md"
 
 for file in STATUS.md ARCHITECTURE.md FEATURES.md BUGS.md DECISIONS.md RISKS.md ASSUMPTIONS.md TEST_PLAN.md RELEASE_CHECKLIST.md HANDOFF.md; do
   [[ -e "$TARGET/docs/$file" ]] || cp "$TEMPLATE/docs/$file" "$TARGET/docs/$file"
@@ -168,7 +168,7 @@ if [[ ! -e "$TARGET/.cursor/rules/app-factory.mdc" ]]; then
   cp "$TEMPLATE/.cursor/rules/app-factory.mdc" "$TARGET/.cursor/rules/app-factory.mdc"
 fi
 
-# Adjust lifecycle wording only in newly installed starter documents.
+# Adjust lifecycle wording only in the installed starter status document.
 python3 - "$TARGET" "$MODE" <<'PY'
 import pathlib
 import sys
