@@ -16,22 +16,29 @@ required = [
     target / "GEMINI.md",
     target / ".cursor/rules/app-factory.mdc",
     target / ".github/copilot-instructions.md",
+    target / ".factory/repository-map.json",
     target / ".factory/project-context.json",
     target / ".factory/standard-lock.json",
     target / ".factory/library-catalog.json",
     target / ".factory/AGENTS.factory.md",
     target / "quality/quality-manifest.json",
+    target / "docs/README.md",
     target / "docs/REUSABLE_COMPONENTS.md",
 ]
 missing = [str(path.relative_to(target)) for path in required if not path.exists()]
 if missing:
     raise SystemExit("Unregistered or incomplete project; missing: " + ", ".join(missing))
 
+repository_map = json.loads((target / ".factory/repository-map.json").read_text())
 context = json.loads((target / ".factory/project-context.json").read_text())
 lock = json.loads((target / ".factory/standard-lock.json").read_text())
 manifest = json.loads((target / "quality/quality-manifest.json").read_text())
 catalog = json.loads((target / ".factory/library-catalog.json").read_text())
 
+if repository_map.get("repositoryType") != "product":
+    raise SystemExit("Registered application repository map must use repositoryType 'product'")
+if repository_map.get("schemaVersion") != lock.get("repositoryMapVersion"):
+    raise SystemExit("Repository map version differs between standard lock and local map")
 if context.get("projectType") not in {"new", "existing"}:
     raise SystemExit("projectType must be 'new' or 'existing'")
 if context.get("projectName") != manifest.get("application", {}).get("name"):
@@ -47,6 +54,10 @@ library_discovery = context.get("libraryDiscovery", {})
 if library_discovery.get("localCatalog") != ".factory/library-catalog.json":
     raise SystemExit("Project context does not declare the local reusable-library catalog")
 
+for relative in repository_map.get("entryPoints", []):
+    if not (target / relative).exists():
+        raise SystemExit(f"Repository map entry point is missing: {relative}")
+
 entry_points = context.get("agentEntryPoints", {})
 for name, relative in entry_points.items():
     if not (target / relative).exists():
@@ -56,6 +67,7 @@ print(f"Registered: {context['projectName']} ({context['projectType']})")
 print("Platforms: " + ", ".join(context.get("platforms", [])))
 print("Lifecycle: " + context.get("lifecycleStatus", "unknown"))
 print("Standard: " + lock.get("standardVersion", "unknown"))
+print("Repository map: " + repository_map.get("schemaVersion", "unknown"))
 print("Library catalog: " + catalog.get("catalogVersion", "unknown"))
 print("Registered libraries: " + str(len(catalog.get("libraries", []))))
 print("Agent entry points: " + ", ".join(sorted(entry_points)))
