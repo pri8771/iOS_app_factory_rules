@@ -1,0 +1,114 @@
+{
+  "$schema": "https://raw.githubusercontent.com/pri8771/iOS_app_factory_rules/main/schemas/repository-map.schema.json",
+  "schemaVersion": "1.0.0",
+  "repositoryType": "central-control-plane",
+  "entryPoints": [
+    "LLM_START_HERE.md",
+    "AGENTS.md",
+    "README.md"
+  ],
+  "canonicalDocuments": {
+    "repositoryModel": "governance/REPOSITORY_MODEL.md",
+    "documentationPolicy": "governance/DOCUMENTATION_POLICY.md",
+    "definitionOfDone": "governance/DEFINITION_OF_DONE.md",
+    "projectLifecycle": "governance/PROJECT_LIFECYCLE.md",
+    "studioPrinciples": "governance/STUDIO_PRINCIPLES.md",
+    "llmDocumentationStandard": "standards/documentation/LLM_DOCUMENTATION_STANDARD.md",
+    "architectureStandard": "standards/engineering/ARCHITECTURE_STANDARD.md",
+    "modularLibraryStandard": "standards/engineering/MODULAR_LIBRARY_STANDARD.md",
+    "reuseFirstWorkflow": "standards/engineering/REUSE_FIRST_WORKFLOW.md",
+    "qualityRulebook": "standards/quality/VIBE_CODING_QUALITY_RULEBOOK.md",
+    "aiCodingAgentStandard": "standards/ai/AI_CODING_AGENT_STANDARD.md",
+    "applePlatformStandard": "standards/platforms/APPLE_STANDARD.md",
+    "webPlatformStandard": "standards/platforms/WEB_STANDARD.md",
+    "centralBlueprint": "docs/CENTRAL_REPOSITORY_BLUEPRINT.md",
+    "ideAgentSetup": "docs/IDE_AGENT_SETUP.md",
+    "libraryRegistry": "registry/libraries.json",
+    "changelog": "CHANGELOG.md",
+    "version": "VERSION"
+  },
+  "locations": {
+    "sourceRoots": [],
+    "testRoots": ["tests"],
+    "buildConfiguration": [],
+    "ciConfiguration": [".github/workflows"],
+    "libraryCatalog": "registry/libraries.json"
+  },
+  "taskRoutes": {
+    "registerNewProduct": [
+      "playbooks/START_NEW_PROJECT.md",
+      "playbooks/CREATE_NEW_PRODUCT_REPOSITORY.md",
+      "scripts/bootstrap-project.sh",
+      "scripts/remote-init.sh"
+    ],
+    "registerExistingProduct": [
+      "playbooks/REGISTER_EXISTING_PROJECT.md",
+      "scripts/bootstrap-project.sh",
+      "scripts/remote-init.sh"
+    ],
+    "upgradeRegisteredProduct": [
+      "playbooks/UPGRADE_REGISTERED_PROJECT.md",
+      "scripts/upgrade-project.sh",
+      "scripts/remote-init.sh"
+    ],
+    "buildReusableInfrastructure": [
+      "standards/engineering/MODULAR_LIBRARY_STANDARD.md",
+      "standards/engineering/REUSE_FIRST_WORKFLOW.md",
+      "registry/libraries.json"
+    ],
+    "promoteCodeToSharedLibrary": [
+      "playbooks/PROMOTE_CODE_TO_SHARED_LIBRARY.md",
+      "templates/library/README_TEMPLATE.md",
+      "templates/library/SWIFT_PACKAGE_CHECKLIST.md",
+      "registry/libraries.json"
+    ],
+    "checkQualityStandard": [
+      "standards/quality/VIBE_CODING_QUALITY_RULEBOOK.md",
+      "governance/DEFINITION_OF_DONE.md"
+    ],
+    "understandRepositoryOwnership": [
+      "governance/REPOSITORY_MODEL.md",
+      "docs/CENTRAL_REPOSITORY_BLUEPRINT.md"
+    ],
+    "understandDocumentationAuthority": [
+      "governance/DOCUMENTATION_POLICY.md",
+      "standards/documentation/LLM_DOCUMENTATION_STANDARD.md"
+    ],
+    "searchReusablePackages": [
+      "registry/libraries.json",
+      "scripts/find-library.py"
+    ],
+    "modifyBootstrapBehavior": [
+      "scripts/bootstrap-project.sh",
+      "scripts/upgrade-project.sh",
+      "scripts/verify-project-registration.sh",
+      "scripts/remote-init.sh",
+      "schemas",
+      "templates/project",
+      "tests/test-bootstrap.sh",
+      "tests/test-upgrade.sh"
+    ],
+    "runCentralValidation": [
+      "scripts/validate-schemas.py",
+      "tests/test-bootstrap.sh",
+      "tests/test-upgrade.sh",
+      ".github/workflows/validate-central-repo.yml"
+    ]
+  },
+  "nonAuthoritative": [
+    "templates",
+    "templates/project/quality/feature-contracts/EXAMPLE.json",
+    "templates/project/quality/completion-reports/EXAMPLE.json",
+    "business/README.md",
+    "design/README.md",
+    "legal/README.md",
+    "product/README.md",
+    "standards/design/README.md",
+    "standards/release/README.md"
+  ],
+  "notes": [
+    "This file describes the central control plane repository itself, not a registered product.",
+    "Registered product repositories receive their own .factory/repository-map.json with repositoryType 'product' from templates/project/.factory/repository-map.json.",
+    "The README.md files under business/, design/, legal/, product/, standards/design/, and standards/release/ are scope placeholders for planned studio-wide content, not yet implemented standards."
+  ]
+}
