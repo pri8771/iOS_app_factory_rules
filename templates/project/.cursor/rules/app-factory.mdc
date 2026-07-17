@@ -1,5 +1,5 @@
 ---
-description: App Factory project registration and quality rules
+description: App Factory project registration, quality, and reuse-first rules
 globs:
 alwaysApply: true
 ---
@@ -9,7 +9,11 @@ Before editing this repository, read:
 - `.factory/project-context.json`
 - `.factory/standard-lock.json`
 - `.factory/AGENTS.factory.md`
+- `.factory/library-catalog.json`
 - `quality/quality-manifest.json`
 - relevant project docs and feature contracts
+- `docs/REUSABLE_COMPONENTS.md`
 
-The `projectType` field is authoritative. Do not re-scaffold an existing project. Do not use undisclosed fake production data, disconnected controls, or unverified completion claims. Report checks run and checks not run. `code_complete` is not `done`.
+The `projectType` field is authoritative. Do not re-scaffold an existing project. Search the reusable-library catalog before implementing cross-cutting infrastructure. Prefer released packages with thin product adapters; otherwise keep local generic modules extraction-ready and documented.
+
+Do not use undisclosed fake production data, disconnected controls, or unverified completion claims. Report checks run and checks not run. `code_complete` is not `done`.
