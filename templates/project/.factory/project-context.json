@@ -28,13 +28,12 @@
   },
   "requiredReading": [
     "AGENTS.md",
+    ".factory/repository-map.json",
+    ".factory/project-context.json",
+    ".factory/standard-lock.json",
     ".factory/AGENTS.factory.md",
     ".factory/library-catalog.json",
-    "quality/quality-manifest.json",
-    "docs/STATUS.md",
-    "docs/ARCHITECTURE.md",
-    "docs/REUSABLE_COMPONENTS.md",
-    "docs/BUGS.md",
-    "docs/DECISIONS.md"
+    "docs/README.md",
+    "quality/quality-manifest.json"
   ]
 }
