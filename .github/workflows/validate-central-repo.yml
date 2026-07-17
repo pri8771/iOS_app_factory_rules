@@ -33,16 +33,21 @@ jobs:
         run: |
           test -f VERSION
           test -f AGENTS.md
+          test -f LLM_START_HERE.md
           test -f governance/DEFINITION_OF_DONE.md
           test -f governance/REPOSITORY_MODEL.md
           test -f standards/quality/VIBE_CODING_QUALITY_RULEBOOK.md
           test -f standards/engineering/MODULAR_LIBRARY_STANDARD.md
           test -f standards/engineering/REUSE_FIRST_WORKFLOW.md
+          test -f standards/documentation/LLM_DOCUMENTATION_STANDARD.md
           test -f playbooks/PROMOTE_CODE_TO_SHARED_LIBRARY.md
           test -f registry/libraries.json
           test -f schemas/library-catalog.schema.json
+          test -f schemas/repository-map.schema.json
           test -f templates/project/.factory/project-context.json
+          test -f templates/project/.factory/repository-map.json
           test -f templates/project/.factory/library-catalog.json
+          test -f templates/project/docs/README.md
           test -f templates/project/docs/REUSABLE_COMPONENTS.md
           test -f templates/project/AGENTS.md
           test -f templates/project/CLAUDE.md
