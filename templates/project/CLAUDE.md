@@ -1,5 +1,6 @@
 # Claude Code Instructions
 
+<!-- APP-FACTORY:BEGIN -->
 This repository is registered with the App Factory.
 
 Use this context path before editing:
@@ -20,3 +21,4 @@ The `projectType` field is authoritative:
 Search `.factory/library-catalog.json` before implementing cross-cutting infrastructure. Prefer released shared packages plus thin product adapters. Keep new generic local modules extraction-ready and record them in `docs/REUSABLE_COMPONENTS.md`.
 
 Do not create duplicate documentation authorities or mix current facts with unapproved proposals. Do not claim `done` when platform checks or human review remain. Record actual verification and limitations.
+<!-- APP-FACTORY:END -->

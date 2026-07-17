@@ -1,5 +1,6 @@
 # Gemini Agent Instructions
 
+<!-- APP-FACTORY:BEGIN -->
 This repository is registered with the App Factory.
 
 Use this context path before changing code:
@@ -17,3 +18,4 @@ Treat `projectType` as authoritative. Existing projects require a baseline inven
 Search `.factory/library-catalog.json` before implementing generic infrastructure. Prefer released shared packages plus product adapters. Record new library-ready local modules or upstream edge cases in `docs/REUSABLE_COMPONENTS.md`.
 
 Do not create overlapping sources of truth. Report actual checks run, checks not run, known issues, and remaining placeholders. `code_complete` is not `done`.
+<!-- APP-FACTORY:END -->

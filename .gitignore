@@ -4,3 +4,5 @@
 node_modules/
 .build/
 DerivedData/
+__pycache__/
+*.pyc

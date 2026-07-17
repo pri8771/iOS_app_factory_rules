@@ -1,3 +1,17 @@
+---
+id: GOV-REPOSITORY-MODEL
+canonicalFor: repository-ownership-model
+status: active
+lastVerified: 2026-07-17
+readWhen:
+  - deciding where new code or a new repository belongs
+  - onboarding to the central repository
+related:
+  - docs/CENTRAL_REPOSITORY_BLUEPRINT.md
+  - governance/DOCUMENTATION_POLICY.md
+supersedes: []
+---
+
 # Repository Model
 
 ## Core rule
@@ -48,6 +62,7 @@ It does not store app-specific PRDs, app code, product secrets, signing assets, 
 Each product repository contains a small local registration layer:
 
 ```text
+.factory/repository-map.json
 .factory/project-context.json
 .factory/standard-lock.json
 .factory/library-catalog.json

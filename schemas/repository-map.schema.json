@@ -36,6 +36,7 @@
         "featureContracts": {"type": "string"},
         "completionReports": {"type": "string"},
         "qualityEvidence": {"type": "string"},
+        "waivers": {"type": "string"},
         "libraryCatalog": {"type": "string"},
         "reusableComponents": {"type": "string"}
       },
