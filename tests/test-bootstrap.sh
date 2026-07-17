@@ -34,10 +34,14 @@ grep -q '# Existing Claude instructions' "$EXISTING_PROJECT/CLAUDE.md"
 grep -q '<!-- APP-FACTORY:BEGIN -->' "$EXISTING_PROJECT/AGENTS.md"
 grep -q '<!-- APP-FACTORY:BEGIN -->' "$EXISTING_PROJECT/CLAUDE.md"
 test -f "$EXISTING_PROJECT/App.swift"
-test -f "$NEW_PROJECT/.factory/library-catalog.json"
-test -f "$EXISTING_PROJECT/.factory/library-catalog.json"
-test -f "$NEW_PROJECT/docs/REUSABLE_COMPONENTS.md"
-test -f "$EXISTING_PROJECT/docs/REUSABLE_COMPONENTS.md"
+
+for project in "$NEW_PROJECT" "$EXISTING_PROJECT"; do
+  test -f "$project/.factory/repository-map.json"
+  test -f "$project/.factory/library-catalog.json"
+  test -f "$project/docs/README.md"
+  test -f "$project/docs/REUSABLE_COMPONENTS.md"
+  grep -q 'canonicalFor: documentation-navigation' "$project/docs/README.md"
+done
 
 python3 - "$NEW_PROJECT" "$EXISTING_PROJECT" <<'PY'
 import json
@@ -51,14 +55,18 @@ new_context = json.loads((new / ".factory/project-context.json").read_text())
 existing_context = json.loads((existing / ".factory/project-context.json").read_text())
 new_lock = json.loads((new / ".factory/standard-lock.json").read_text())
 new_catalog = json.loads((new / ".factory/library-catalog.json").read_text())
+new_map = json.loads((new / ".factory/repository-map.json").read_text())
 
 assert new_context["projectType"] == "new"
 assert new_context["existingCodeBaselineRequired"] is False
+assert new_context["requiredReading"][1] == ".factory/repository-map.json"
 assert new_context["libraryDiscovery"]["policy"] == "reuse_first"
-assert new_context["libraryDiscovery"]["localCatalog"] == ".factory/library-catalog.json"
 assert existing_context["projectType"] == "existing"
 assert existing_context["existingCodeBaselineRequired"] is True
+assert new_lock["repositoryMapVersion"] == new_map["schemaVersion"]
 assert new_lock["libraryCatalogVersion"] == new_catalog["catalogVersion"]
+assert new_map["repositoryType"] == "product"
+assert "documentationIndex" in new_map["canonicalDocuments"]
 assert set(existing_context["agentEntryPoints"]) == {
     "generic",
     "claudeCode",
