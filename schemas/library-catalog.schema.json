@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/pri8771/iOS_app_factory_rules/main/schemas/library-catalog.schema.json",
+  "title": "App Factory Reusable Library Catalog",
+  "type": "object",
+  "required": ["catalogVersion", "updatedAt", "libraries"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "catalogVersion": {"type": "string", "minLength": 1},
+    "updatedAt": {"type": "string", "format": "date"},
+    "libraries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "repository",
+          "packageManager",
+          "platforms",
+          "capabilities",
+          "status",
+          "latestStableVersion",
+          "installation"
+        ],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+          "name": {"type": "string", "minLength": 1},
+          "repository": {"type": "string", "minLength": 1},
+          "packageManager": {
+            "enum": ["swift-package-manager", "npm", "python", "other"]
+          },
+          "platforms": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "string"}
+          },
+          "capabilities": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "string"}
+          },
+          "status": {
+            "enum": ["experimental", "supported", "deprecated", "archived"]
+          },
+          "latestStableVersion": {"type": "string", "minLength": 1},
+          "installation": {"type": "string", "minLength": 1},
+          "minimumVersions": {"type": "object", "additionalProperties": {"type": "string"}},
+          "documentation": {"type": "string"},
+          "license": {"type": "string"},
+          "owner": {"type": "string"},
+          "knownLimitations": {"type": "array", "items": {"type": "string"}},
+          "notes": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

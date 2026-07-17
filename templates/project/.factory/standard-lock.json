@@ -1,8 +1,10 @@
 {
   "standardRepository": "pri8771/iOS_app_factory_rules",
   "standardRepositoryUrl": "https://github.com/pri8771/iOS_app_factory_rules",
-  "standardVersion": "0.2.0",
+  "standardVersion": "0.3.0",
   "standardRef": "main",
   "profiles": ["common", "apple", "ios"],
+  "libraryCatalogVersion": "0.1.0",
+  "libraryCatalogPath": ".factory/library-catalog.json",
   "installedAt": "REPLACE_DATE"
 }

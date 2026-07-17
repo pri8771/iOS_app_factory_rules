@@ -12,3 +12,7 @@
 10. Completion is derived from evidence, not from an agent’s confidence.
 11. Existing projects must be understood before they are reorganized.
 12. New projects must define the user outcome, constraints, and Definition of Done before scaling implementation.
+13. Keep each product in its own repository unless multiple targets genuinely share one product lifecycle.
+14. Design cross-cutting capabilities with generic, testable boundaries and search the reusable-library catalog before reimplementing them.
+15. Prefer versioned package reuse over copy-paste reuse.
+16. Promote generic improvements upstream with tests, releases, and separate cross-repository evidence; never contaminate shared code with app-specific behavior.

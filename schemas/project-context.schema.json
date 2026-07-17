@@ -11,6 +11,7 @@
     "registeredAt",
     "existingCodeBaselineRequired",
     "constraints",
+    "libraryDiscovery",
     "agentEntryPoints",
     "requiredReading"
   ],
@@ -32,6 +33,17 @@
         "thirdPartyDependenciesAllowed": {"type": "boolean"}
       },
       "additionalProperties": true
+    },
+    "libraryDiscovery": {
+      "type": "object",
+      "required": ["policy", "localCatalog", "centralCatalog", "reusableComponentsDocument"],
+      "properties": {
+        "policy": {"const": "reuse_first"},
+        "localCatalog": {"type": "string", "minLength": 1},
+        "centralCatalog": {"type": "string", "minLength": 1},
+        "reusableComponentsDocument": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
     },
     "agentEntryPoints": {
       "type": "object",
