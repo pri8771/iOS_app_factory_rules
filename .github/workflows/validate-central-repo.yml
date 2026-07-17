@@ -25,15 +25,19 @@ jobs:
         run: |
           bash -n scripts/bootstrap-project.sh
           bash -n scripts/remote-init.sh
+          bash -n scripts/upgrade-project.sh
           bash -n scripts/verify-project-registration.sh
           bash -n tests/test-bootstrap.sh
+          bash -n tests/test-upgrade.sh
           python3 -m py_compile scripts/find-library.py
+          python3 -m py_compile scripts/validate-schemas.py
 
       - name: Verify required central files
         run: |
           test -f VERSION
           test -f AGENTS.md
           test -f LLM_START_HERE.md
+          test -f .factory/repository-map.json
           test -f governance/DEFINITION_OF_DONE.md
           test -f governance/REPOSITORY_MODEL.md
           test -f standards/quality/VIBE_CODING_QUALITY_RULEBOOK.md
@@ -41,11 +45,14 @@ jobs:
           test -f standards/engineering/REUSE_FIRST_WORKFLOW.md
           test -f standards/documentation/LLM_DOCUMENTATION_STANDARD.md
           test -f playbooks/PROMOTE_CODE_TO_SHARED_LIBRARY.md
+          test -f playbooks/UPGRADE_REGISTERED_PROJECT.md
           test -f registry/libraries.json
           test -f schemas/library-catalog.schema.json
           test -f schemas/repository-map.schema.json
+          test -f schemas/standard-lock.schema.json
           test -f templates/project/.factory/project-context.json
           test -f templates/project/.factory/repository-map.json
+          test -f templates/project/.factory/standard-lock.json
           test -f templates/project/.factory/library-catalog.json
           test -f templates/project/docs/README.md
           test -f templates/project/docs/REUSABLE_COMPONENTS.md
@@ -56,8 +63,14 @@ jobs:
           test -f templates/project/.github/copilot-instructions.md
           test -f schemas/project-context.schema.json
 
+      - name: Validate templates and registry against schemas
+        run: python3 scripts/validate-schemas.py
+
       - name: Test new and existing project registration
         run: bash tests/test-bootstrap.sh
+
+      - name: Test project upgrade
+        run: bash tests/test-upgrade.sh
 
       - name: Test empty library catalog search
         run: |

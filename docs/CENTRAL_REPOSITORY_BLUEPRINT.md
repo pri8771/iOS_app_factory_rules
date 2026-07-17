@@ -39,6 +39,7 @@
 
 - automatic remote initialization;
 - non-destructive existing-project onboarding;
+- non-destructive standard upgrades for already-registered projects;
 - local project-context and standards locks;
 - IDE and agent instruction adapters;
 - quality manifests, feature contracts, completion reports, waivers, and evidence folders;

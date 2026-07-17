@@ -8,6 +8,7 @@ Use this file as the shortest reliable entry point into the App Factory control 
 - Repository: `pri8771/iOS_app_factory_rules`
 - Contains: governance, standards, schemas, templates, automation, reusable-library registry
 - Does not contain: product source code or mature shared-library source code
+- Machine-readable self map: `.factory/repository-map.json` (`repositoryType: "central-control-plane"`)
 
 ## Read in this order
 
@@ -26,13 +27,15 @@ Do not recursively read the entire repository by default.
 |---|---|
 | Register a new product | `playbooks/START_NEW_PROJECT.md` |
 | Register an existing product | `playbooks/REGISTER_EXISTING_PROJECT.md` |
+| Upgrade an already-registered product | `playbooks/UPGRADE_REGISTERED_PROJECT.md` |
 | Build reusable infrastructure | `standards/engineering/MODULAR_LIBRARY_STANDARD.md` and `standards/engineering/REUSE_FIRST_WORKFLOW.md` |
 | Promote code to a package | `playbooks/PROMOTE_CODE_TO_SHARED_LIBRARY.md` |
 | Check product quality | `standards/quality/VIBE_CODING_QUALITY_RULEBOOK.md` |
 | Understand repository ownership | `governance/REPOSITORY_MODEL.md` |
 | Understand documentation authority | `governance/DOCUMENTATION_POLICY.md` |
 | Search reusable packages | `registry/libraries.json` |
-| Modify bootstrap behavior | `scripts/bootstrap-project.sh`, schemas, templates, and bootstrap tests |
+| Modify bootstrap or upgrade behavior | `scripts/bootstrap-project.sh`, `scripts/upgrade-project.sh`, schemas, templates, and `tests/test-bootstrap.sh` / `tests/test-upgrade.sh` |
+| Run central validation | `scripts/validate-schemas.py`, `tests/test-bootstrap.sh`, `tests/test-upgrade.sh` |
 
 ## LLM navigation rules
 
