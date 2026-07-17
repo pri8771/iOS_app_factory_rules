@@ -1,3 +1,17 @@
+---
+id: GOV-DEFINITION-OF-DONE
+canonicalFor: definition-of-done
+status: active
+lastVerified: 2026-07-17
+readWhen:
+  - deciding whether a feature or task can be marked done
+  - writing a completion report
+related:
+  - governance/PROJECT_LIFECYCLE.md
+  - standards/quality/VIBE_CODING_QUALITY_RULEBOOK.md
+supersedes: []
+---
+
 # Universal Definition of Done
 
 A feature is done only when all applicable conditions are true.

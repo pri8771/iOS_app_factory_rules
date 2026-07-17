@@ -1,3 +1,17 @@
+---
+id: STD-LLM-DOCUMENTATION
+canonicalFor: llm-first-documentation-rules
+status: active
+lastVerified: 2026-07-17
+readWhen:
+  - creating or restructuring any durable document
+  - auditing repository navigability
+related:
+  - governance/DOCUMENTATION_POLICY.md
+  - schemas/repository-map.schema.json
+supersedes: []
+---
+
 # LLM-First Documentation Standard
 
 ## Goal

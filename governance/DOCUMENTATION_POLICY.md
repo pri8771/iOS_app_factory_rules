@@ -1,3 +1,17 @@
+---
+id: GOV-DOCUMENTATION-POLICY
+canonicalFor: documentation-authority
+status: active
+lastVerified: 2026-07-17
+readWhen:
+  - deciding which repository or document owns a piece of information
+  - resolving a conflict between two documents
+related:
+  - standards/documentation/LLM_DOCUMENTATION_STANDARD.md
+  - governance/REPOSITORY_MODEL.md
+supersedes: []
+---
+
 # Documentation Policy
 
 ## Central rules repository
