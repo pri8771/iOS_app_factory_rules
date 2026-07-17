@@ -26,6 +26,8 @@ All notable changes to the App Factory Rules are recorded here.
 ### Fixed
 
 - `templates/project/quality/quality-manifest.json` declared `qualityStandardVersion: "0.2.0"`, two releases behind the actual current standard. `bootstrap-project.sh` always generates this file fresh from `VERSION` rather than copying the template, so no registered project was affected, but the checked-in template contradicted the current version everywhere else it is stated.
+- `scripts/upgrade-project.sh` updated only `.factory/standard-lock.json`'s `standardVersion`, not `quality/quality-manifest.json`'s `qualityStandardVersion`. Since bootstrap always writes both from the same `VERSION`, any real cross-version upgrade (e.g. an actual 0.4.0 registration upgrading to 0.5.0) mutated the lock and then failed the script's own final verification call, because the two versions no longer matched. Upgrade now patches `qualityStandardVersion` in lockstep with the lock, touching only that one field so product-customized `requirements`/`requiredTestSuites` are preserved. Caught by review before merge; `tests/test-upgrade.sh` now stales both files together to cover it.
+- `remote-init.sh --dry-run` was silently ignored for `--mode new`/`--mode existing` — the flag was accepted but only consumed by the upgrade branch, so a dry-run request against those modes still ran a real, file-writing bootstrap. `remote-init.sh` now rejects `--dry-run` outside `--mode upgrade` instead of silently no-op'ing it. Caught by review before merge.
 
 ### Migration impact
 

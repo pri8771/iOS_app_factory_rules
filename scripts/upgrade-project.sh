@@ -151,6 +151,20 @@ version_changed = old_version != version
 catalog_changed = old_catalog_version != new_catalog_version
 lock_needs_rewrite = version_changed or catalog_changed
 
+# quality/quality-manifest.json carries its own qualityStandardVersion, and the
+# verifier requires it to equal the lock's standardVersion. Bootstrap writes
+# both from the same VERSION at registration time, so keep them in lockstep
+# here too; otherwise a version-changing upgrade mutates the lock and then
+# fails its own final verification. Patch only that one field: the rest of
+# the manifest (application, requirements, requiredTestSuites) may be
+# product-customized.
+manifest_path = target / "quality/quality-manifest.json"
+manifest_changed = (
+    version_changed
+    and manifest_path.exists()
+    and json.loads(manifest_path.read_text()).get("qualityStandardVersion") != version
+)
+
 if not dry_run:
     if catalog_changed:
         catalog_path.write_text(json.dumps(new_catalog, indent=2) + "\n")
@@ -165,8 +179,12 @@ if not dry_run:
         if version_changed:
             new_lock["previousStandardVersion"] = old_version
         lock_path.write_text(json.dumps(new_lock, indent=2) + "\n")
+    if manifest_changed:
+        manifest = json.loads(manifest_path.read_text())
+        manifest["qualityStandardVersion"] = version
+        manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
 
-already_up_to_date = not (created or appended or lock_needs_rewrite)
+already_up_to_date = not (created or appended or lock_needs_rewrite or manifest_changed)
 
 print(f"Target: {target}")
 print(f"Standard version: {old_version} -> {version}")
@@ -175,6 +193,9 @@ if dry_run:
     print("Dry run: no files were written.")
 if already_up_to_date:
     print("Already up to date. No changes were needed.")
+if manifest_changed:
+    verb = "Would update" if dry_run else "Updated"
+    print(f"{verb} quality/quality-manifest.json qualityStandardVersion to {version}")
 if created:
     verb = "Would create" if dry_run else "Created"
     print(f"{verb} missing required files:")

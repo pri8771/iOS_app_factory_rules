@@ -40,6 +40,10 @@ done
 if [[ "$MODE" == "new" || "$MODE" == "existing" ]]; then
   [[ -n "$NAME" && -n "$PLATFORMS" ]] || { echo "--name and --platforms are required for --mode $MODE" >&2; exit 2; }
 fi
+if [[ "$DRY_RUN" -eq 1 && "$MODE" != "upgrade" ]]; then
+  echo "--dry-run is only supported with --mode upgrade; bootstrap has no dry-run mode" >&2
+  exit 2
+fi
 [[ -d "$TARGET" ]] || { echo "Target directory does not exist: $TARGET" >&2; exit 2; }
 command -v git >/dev/null 2>&1 || { echo "git is required" >&2; exit 2; }
 command -v python3 >/dev/null 2>&1 || { echo "python3 is required" >&2; exit 2; }

@@ -25,6 +25,10 @@ import sys
 
 project = pathlib.Path(sys.argv[1])
 
+# Simulate a REAL historical registration under an older standard: bootstrap
+# always writes the lock's standardVersion and the quality manifest's
+# qualityStandardVersion from the same VERSION, so an authentic stale
+# registration has both at the old value, not just the lock.
 lock_path = project / ".factory/standard-lock.json"
 lock = json.loads(lock_path.read_text())
 lock["standardVersion"] = "0.0.1"
@@ -33,6 +37,11 @@ lock.pop("$schema", None)
 lock.pop("upgradedAt", None)
 lock.pop("previousStandardVersion", None)
 lock_path.write_text(json.dumps(lock, indent=2) + "\n")
+
+manifest_path = project / "quality/quality-manifest.json"
+manifest = json.loads(manifest_path.read_text())
+manifest["qualityStandardVersion"] = "0.0.1"
+manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
 
 catalog_path = project / ".factory/library-catalog.json"
 catalog = json.loads(catalog_path.read_text())
@@ -67,7 +76,23 @@ import sys
 project = pathlib.Path(sys.argv[1])
 lock = json.loads((project / ".factory/standard-lock.json").read_text())
 assert lock["standardVersion"] == "0.0.1", "dry run must not modify the standard lock"
+manifest = json.loads((project / "quality/quality-manifest.json").read_text())
+assert manifest["qualityStandardVersion"] == "0.0.1", "dry run must not modify the quality manifest"
 PY
+
+# remote-init.sh must reject --dry-run outside --mode upgrade rather than
+# silently accepting it and running a real (non-preview) bootstrap. This
+# check happens before the network clone, so it is safe to test offline.
+DRY_RUN_TARGET="$TMP/dry-run-reject"
+mkdir -p "$DRY_RUN_TARGET"
+if "$ROOT/scripts/remote-init.sh" --target "$DRY_RUN_TARGET" --mode new --name "X" --platforms ios --dry-run 2>/dev/null; then
+  echo "remote-init.sh must reject --dry-run with --mode new" >&2
+  exit 1
+fi
+if [[ -e "$DRY_RUN_TARGET/.factory" ]]; then
+  echo "remote-init.sh must not have written anything before rejecting --dry-run" >&2
+  exit 1
+fi
 
 # Real upgrade must forward-fill missing files, refresh central metadata, and
 # leave product-authored content untouched.
@@ -95,6 +120,10 @@ catalog = json.loads((project / ".factory/library-catalog.json").read_text())
 registry_catalog = json.loads((root / "registry/libraries.json").read_text())
 assert catalog["catalogVersion"] == registry_catalog["catalogVersion"]
 assert lock["libraryCatalogVersion"] == registry_catalog["catalogVersion"]
+
+manifest = json.loads((project / "quality/quality-manifest.json").read_text())
+assert manifest["qualityStandardVersion"] == current_version, manifest["qualityStandardVersion"]
+assert manifest["qualityStandardVersion"] == lock["standardVersion"]
 PY
 
 "$ROOT/scripts/verify-project-registration.sh" "$PROJECT"
