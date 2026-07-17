@@ -1,0 +1,77 @@
+{
+  "$schema": "https://raw.githubusercontent.com/pri8771/iOS_app_factory_rules/main/schemas/repository-map.schema.json",
+  "schemaVersion": "1.0.0",
+  "repositoryType": "product",
+  "entryPoints": [
+    "AGENTS.md",
+    ".factory/repository-map.json",
+    ".factory/project-context.json",
+    "docs/README.md"
+  ],
+  "canonicalDocuments": {
+    "projectIdentity": ".factory/project-context.json",
+    "standardsLock": ".factory/standard-lock.json",
+    "libraryCatalog": ".factory/library-catalog.json",
+    "documentationIndex": "docs/README.md",
+    "currentStatus": "docs/STATUS.md",
+    "currentArchitecture": "docs/ARCHITECTURE.md",
+    "featureInventory": "docs/FEATURES.md",
+    "bugs": "docs/BUGS.md",
+    "decisions": "docs/DECISIONS.md",
+    "risks": "docs/RISKS.md",
+    "assumptions": "docs/ASSUMPTIONS.md",
+    "testPlan": "docs/TEST_PLAN.md",
+    "releaseReadiness": "docs/RELEASE_CHECKLIST.md",
+    "handoff": "docs/HANDOFF.md",
+    "reusableComponents": "docs/REUSABLE_COMPONENTS.md"
+  },
+  "locations": {
+    "sourceRoots": [],
+    "testRoots": [],
+    "buildConfiguration": [],
+    "ciConfiguration": [".github/workflows"],
+    "featureContracts": "quality/feature-contracts",
+    "completionReports": "quality/completion-reports",
+    "qualityEvidence": "quality/evidence",
+    "libraryCatalog": ".factory/library-catalog.json",
+    "reusableComponents": "docs/REUSABLE_COMPONENTS.md"
+  },
+  "taskRoutes": {
+    "onboarding": [
+      ".factory/project-context.json",
+      "docs/STATUS.md",
+      "docs/ARCHITECTURE.md",
+      "docs/FEATURES.md"
+    ],
+    "featureWork": [
+      "docs/STATUS.md",
+      "docs/ARCHITECTURE.md",
+      "quality/feature-contracts"
+    ],
+    "bugFix": [
+      "docs/BUGS.md",
+      "docs/ARCHITECTURE.md",
+      "docs/TEST_PLAN.md"
+    ],
+    "reusableInfrastructure": [
+      ".factory/library-catalog.json",
+      "docs/REUSABLE_COMPONENTS.md",
+      "docs/ARCHITECTURE.md"
+    ],
+    "release": [
+      "docs/STATUS.md",
+      "docs/TEST_PLAN.md",
+      "docs/RELEASE_CHECKLIST.md"
+    ]
+  },
+  "nonAuthoritative": [
+    "templates",
+    "examples",
+    "quality/feature-contracts/EXAMPLE.json",
+    "quality/completion-reports/EXAMPLE.json"
+  ],
+  "notes": [
+    "Populate sourceRoots, testRoots, and buildConfiguration during onboarding.",
+    "Do not treat templates or examples as implemented product facts."
+  ]
+}
