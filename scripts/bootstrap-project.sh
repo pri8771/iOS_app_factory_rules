@@ -54,10 +54,11 @@ mkdir -p \
   "$TARGET/docs"
 
 [[ -e "$TARGET/.factory/AGENTS.factory.md" ]] || cp "$TEMPLATE/.factory/AGENTS.factory.md" "$TARGET/.factory/AGENTS.factory.md"
+[[ -e "$TARGET/.factory/library-catalog.json" ]] || cp "$ROOT/registry/libraries.json" "$TARGET/.factory/library-catalog.json"
 [[ -e "$TARGET/quality/evidence/README.md" ]] || cp "$TEMPLATE/quality/evidence/README.md" "$TARGET/quality/evidence/README.md"
 [[ -e "$TARGET/quality/waivers/README.md" ]] || cp "$TEMPLATE/quality/waivers/README.md" "$TARGET/quality/waivers/README.md"
 
-for file in STATUS.md ARCHITECTURE.md FEATURES.md BUGS.md DECISIONS.md RISKS.md ASSUMPTIONS.md TEST_PLAN.md RELEASE_CHECKLIST.md HANDOFF.md; do
+for file in STATUS.md ARCHITECTURE.md FEATURES.md BUGS.md DECISIONS.md RISKS.md ASSUMPTIONS.md TEST_PLAN.md RELEASE_CHECKLIST.md HANDOFF.md REUSABLE_COMPONENTS.md; do
   [[ -e "$TARGET/docs/$file" ]] || cp "$TEMPLATE/docs/$file" "$TARGET/docs/$file"
 done
 
@@ -75,6 +76,7 @@ name = sys.argv[3]
 platforms = [p.strip() for p in sys.argv[4].split(',') if p.strip()]
 date = sys.argv[5]
 version = sys.argv[6]
+catalog = json.loads((target / ".factory/library-catalog.json").read_text())
 
 context = {
     "$schema": "https://raw.githubusercontent.com/pri8771/iOS_app_factory_rules/main/schemas/project-context.schema.json",
@@ -90,6 +92,12 @@ context = {
         "backendAllowed": False,
         "thirdPartyDependenciesAllowed": False,
     },
+    "libraryDiscovery": {
+        "policy": "reuse_first",
+        "localCatalog": ".factory/library-catalog.json",
+        "centralCatalog": "pri8771/iOS_app_factory_rules/registry/libraries.json",
+        "reusableComponentsDocument": "docs/REUSABLE_COMPONENTS.md",
+    },
     "agentEntryPoints": {
         "generic": "AGENTS.md",
         "claudeCode": "CLAUDE.md",
@@ -101,9 +109,11 @@ context = {
     "requiredReading": [
         "AGENTS.md",
         ".factory/AGENTS.factory.md",
+        ".factory/library-catalog.json",
         "quality/quality-manifest.json",
         "docs/STATUS.md",
         "docs/ARCHITECTURE.md",
+        "docs/REUSABLE_COMPONENTS.md",
         "docs/BUGS.md",
         "docs/DECISIONS.md",
     ],
@@ -114,6 +124,8 @@ lock = {
     "standardVersion": version,
     "standardRef": "main",
     "profiles": ["common"] + platforms,
+    "libraryCatalogVersion": catalog["catalogVersion"],
+    "libraryCatalogPath": ".factory/library-catalog.json",
     "installedAt": date,
 }
 manifest = {
@@ -142,9 +154,9 @@ read -r -d '' AGENT_BLOCK <<'EOF' || true
 <!-- APP-FACTORY:BEGIN -->
 ## App Factory Registration
 
-Before editing this repository, read `.factory/project-context.json`, `.factory/AGENTS.factory.md`, `quality/quality-manifest.json`, and the relevant files in `docs/` and `quality/feature-contracts/`.
+Before editing this repository, read `.factory/project-context.json`, `.factory/AGENTS.factory.md`, `.factory/library-catalog.json`, `quality/quality-manifest.json`, and the relevant files in `docs/` and `quality/feature-contracts/`.
 
-The `projectType` field is authoritative. Do not mark work done without required evidence.
+The `projectType` field is authoritative. Search the reusable-library catalog before implementing cross-cutting infrastructure. Do not mark work done without required evidence.
 <!-- APP-FACTORY:END -->
 EOF
 
@@ -168,7 +180,6 @@ if [[ ! -e "$TARGET/.cursor/rules/app-factory.mdc" ]]; then
   cp "$TEMPLATE/.cursor/rules/app-factory.mdc" "$TARGET/.cursor/rules/app-factory.mdc"
 fi
 
-# Adjust lifecycle wording only in the installed starter status document.
 python3 - "$TARGET" "$MODE" <<'PY'
 import pathlib
 import sys
@@ -182,5 +193,5 @@ path.write_text(text)
 PY
 
 echo "Registered $NAME as a $MODE project at $TARGET"
-echo "Installed agent entry points for generic/Codex, Claude Code, Gemini, Cursor, and GitHub Copilot."
-echo "Next: review .factory/project-context.json and quality/quality-manifest.json"
+echo "Installed agent entry points and reusable-library catalog snapshot."
+echo "Next: review .factory/project-context.json, .factory/library-catalog.json, and quality/quality-manifest.json"
