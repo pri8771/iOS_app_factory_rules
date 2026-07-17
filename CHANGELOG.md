@@ -2,6 +2,23 @@
 
 All notable changes to the App Factory Rules are recorded here.
 
+## 0.4.0 — 2026-07-17
+
+### Added
+
+- `LLM_START_HERE.md` as the shortest central-repository context path.
+- LLM-first documentation standard with canonical ownership, metadata, stable headings, status vocabulary, and retrieval rules.
+- Machine-readable repository-map schema and product template.
+- Product-local `docs/README.md` documentation index with task-based reading routes.
+- Repository-map version locking and registration verification.
+
+### Changed
+
+- Project bootstrap now installs an LLM navigation layer before detailed documentation.
+- All supported agent templates now use the repository map and documentation index before deep repository reading.
+- Bootstrap and CI tests now validate the LLM context path for both new and existing projects.
+- Documentation guidance now requires one canonical owner per durable topic and explicit separation of facts, decisions, assumptions, and proposals.
+
 ## 0.3.0 — 2026-07-17
 
 ### Added
