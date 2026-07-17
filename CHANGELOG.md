@@ -2,6 +2,27 @@
 
 All notable changes to the App Factory Rules are recorded here.
 
+## 0.3.0 — 2026-07-17
+
+### Added
+
+- One-repository-per-product and one-repository-per-mature-library governance.
+- Modular library engineering standard and reuse-first implementation workflow.
+- Reusable-library promotion and generic edge-case contribution playbook.
+- Machine-readable reusable-library registry and schema.
+- Project-local library-catalog snapshot and reusable-component tracking document.
+- Automatic remote project initialization through `scripts/remote-init.sh`.
+- Library-catalog search helper.
+- Swift package extraction checklist and shared-library README template.
+
+### Changed
+
+- Project bootstrap now installs and locks a reusable-library catalog snapshot.
+- Agent entry files now require library discovery before new cross-cutting infrastructure.
+- Existing-project onboarding now inventories internal reusable modules and dependency overlap.
+- New-project onboarding now reviews reusable packages before infrastructure implementation.
+- Registration verification and CI now validate library-catalog files and versions.
+
 ## 0.2.0 — 2026-07-16
 
 ### Added
