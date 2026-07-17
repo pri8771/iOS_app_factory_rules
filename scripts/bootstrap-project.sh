@@ -54,11 +54,12 @@ mkdir -p \
   "$TARGET/docs"
 
 [[ -e "$TARGET/.factory/AGENTS.factory.md" ]] || cp "$TEMPLATE/.factory/AGENTS.factory.md" "$TARGET/.factory/AGENTS.factory.md"
+[[ -e "$TARGET/.factory/repository-map.json" ]] || cp "$TEMPLATE/.factory/repository-map.json" "$TARGET/.factory/repository-map.json"
 [[ -e "$TARGET/.factory/library-catalog.json" ]] || cp "$ROOT/registry/libraries.json" "$TARGET/.factory/library-catalog.json"
 [[ -e "$TARGET/quality/evidence/README.md" ]] || cp "$TEMPLATE/quality/evidence/README.md" "$TARGET/quality/evidence/README.md"
 [[ -e "$TARGET/quality/waivers/README.md" ]] || cp "$TEMPLATE/quality/waivers/README.md" "$TARGET/quality/waivers/README.md"
 
-for file in STATUS.md ARCHITECTURE.md FEATURES.md BUGS.md DECISIONS.md RISKS.md ASSUMPTIONS.md TEST_PLAN.md RELEASE_CHECKLIST.md HANDOFF.md REUSABLE_COMPONENTS.md; do
+for file in README.md STATUS.md ARCHITECTURE.md FEATURES.md BUGS.md DECISIONS.md RISKS.md ASSUMPTIONS.md TEST_PLAN.md RELEASE_CHECKLIST.md HANDOFF.md REUSABLE_COMPONENTS.md; do
   [[ -e "$TARGET/docs/$file" ]] || cp "$TEMPLATE/docs/$file" "$TARGET/docs/$file"
 done
 
@@ -108,14 +109,13 @@ context = {
     },
     "requiredReading": [
         "AGENTS.md",
+        ".factory/repository-map.json",
+        ".factory/project-context.json",
+        ".factory/standard-lock.json",
         ".factory/AGENTS.factory.md",
         ".factory/library-catalog.json",
+        "docs/README.md",
         "quality/quality-manifest.json",
-        "docs/STATUS.md",
-        "docs/ARCHITECTURE.md",
-        "docs/REUSABLE_COMPONENTS.md",
-        "docs/BUGS.md",
-        "docs/DECISIONS.md",
     ],
 }
 lock = {
@@ -124,6 +124,8 @@ lock = {
     "standardVersion": version,
     "standardRef": "main",
     "profiles": ["common"] + platforms,
+    "repositoryMapVersion": "1.0.0",
+    "repositoryMapPath": ".factory/repository-map.json",
     "libraryCatalogVersion": catalog["catalogVersion"],
     "libraryCatalogPath": ".factory/library-catalog.json",
     "installedAt": date,
@@ -148,15 +150,21 @@ for path, value in [
     (target / "quality/quality-manifest.json", manifest),
 ]:
     path.write_text(json.dumps(value, indent=2) + "\n")
+
+for relative in ["docs/README.md"]:
+    path = target / relative
+    path.write_text(path.read_text().replace("REPLACE_DATE", date))
 PY
 
 read -r -d '' AGENT_BLOCK <<'EOF' || true
 <!-- APP-FACTORY:BEGIN -->
 ## App Factory Registration
 
-Before editing this repository, read `.factory/project-context.json`, `.factory/AGENTS.factory.md`, `.factory/library-catalog.json`, `quality/quality-manifest.json`, and the relevant files in `docs/` and `quality/feature-contracts/`.
+Use the shortest reliable context path before editing:
 
-The `projectType` field is authoritative. Search the reusable-library catalog before implementing cross-cutting infrastructure. Do not mark work done without required evidence.
+`AGENTS.md → .factory/repository-map.json → .factory/project-context.json → docs/README.md → task-relevant canonical documents`
+
+Read `.factory/library-catalog.json` before implementing cross-cutting infrastructure. The `projectType` field is authoritative. Do not read the entire repository by default, create duplicate sources of truth, or mark work done without required evidence.
 <!-- APP-FACTORY:END -->
 EOF
 
@@ -193,5 +201,5 @@ path.write_text(text)
 PY
 
 echo "Registered $NAME as a $MODE project at $TARGET"
-echo "Installed agent entry points and reusable-library catalog snapshot."
-echo "Next: review .factory/project-context.json, .factory/library-catalog.json, and quality/quality-manifest.json"
+echo "Installed LLM navigation, agent entry points, quality files, and reusable-library catalog snapshot."
+echo "Next: populate .factory/repository-map.json and begin with docs/README.md"
