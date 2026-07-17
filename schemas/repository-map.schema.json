@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/pri8771/iOS_app_factory_rules/main/schemas/repository-map.schema.json",
+  "title": "App Factory Repository Map",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "repositoryType",
+    "entryPoints",
+    "canonicalDocuments",
+    "locations",
+    "taskRoutes"
+  ],
+  "properties": {
+    "$schema": {"type": "string"},
+    "schemaVersion": {"type": "string", "minLength": 1},
+    "repositoryType": {
+      "enum": ["product", "shared-library", "central-control-plane"]
+    },
+    "entryPoints": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string"}
+    },
+    "canonicalDocuments": {
+      "type": "object",
+      "additionalProperties": {"type": "string"}
+    },
+    "locations": {
+      "type": "object",
+      "properties": {
+        "sourceRoots": {"type": "array", "items": {"type": "string"}},
+        "testRoots": {"type": "array", "items": {"type": "string"}},
+        "buildConfiguration": {"type": "array", "items": {"type": "string"}},
+        "ciConfiguration": {"type": "array", "items": {"type": "string"}},
+        "featureContracts": {"type": "string"},
+        "completionReports": {"type": "string"},
+        "qualityEvidence": {"type": "string"},
+        "libraryCatalog": {"type": "string"},
+        "reusableComponents": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "taskRoutes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {"type": "string"}
+      }
+    },
+    "nonAuthoritative": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "notes": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
