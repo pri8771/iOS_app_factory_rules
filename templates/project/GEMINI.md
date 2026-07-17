@@ -2,18 +2,18 @@
 
 This repository is registered with the App Factory.
 
-Read these files before changing code:
+Use this context path before changing code:
 
-- `.factory/project-context.json`
-- `.factory/standard-lock.json`
-- `.factory/AGENTS.factory.md`
-- `.factory/library-catalog.json`
-- `quality/quality-manifest.json`
-- relevant files in `docs/` and `quality/feature-contracts/`
-- `docs/REUSABLE_COMPONENTS.md`
+1. `.factory/repository-map.json`
+2. `.factory/project-context.json`
+3. `.factory/standard-lock.json`
+4. `docs/README.md`
+5. Only the canonical files routed for the current task
 
-Treat `projectType` as authoritative. Existing projects require a baseline inventory before restructuring; new projects require defined scope, architecture, and reusable-library review before broad implementation.
+Do not scan every file by default. Retrieve the smallest authoritative context set from the repository map and documentation index.
 
-Search the catalog before implementing generic infrastructure. Prefer released shared packages plus product adapters. Record any new library-ready local module or upstream edge case.
+Treat `projectType` as authoritative. Existing projects require a baseline inventory before restructuring; new projects require defined scope, architecture, contracts, and reusable-library review before broad implementation.
 
-Report actual checks run, checks not run, known issues, and remaining placeholders. `code_complete` is not `done`.
+Search `.factory/library-catalog.json` before implementing generic infrastructure. Prefer released shared packages plus product adapters. Record new library-ready local modules or upstream edge cases in `docs/REUSABLE_COMPONENTS.md`.
+
+Do not create overlapping sources of truth. Report actual checks run, checks not run, known issues, and remaining placeholders. `code_complete` is not `done`.
