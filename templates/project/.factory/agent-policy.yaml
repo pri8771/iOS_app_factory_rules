@@ -1,0 +1,21 @@
+schemaVersion: 1
+defaults:
+  maxConcurrentAgents: 3
+  maxDelegationDepth: 1
+  requireRunReceipt: true
+  prohibitRecursiveDelegation: true
+riskPolicy:
+  low:
+    minimumVerification: configuration-only
+  medium:
+    minimumVerification: ide-reported
+  high:
+    minimumVerification: provider-response
+roles:
+  repository-mapper:
+    mayWrite: false
+  implementation:
+    mayWrite: true
+  architecture-review:
+    mayWrite: false
+    minimumVerification: provider-response
