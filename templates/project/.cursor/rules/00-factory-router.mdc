@@ -1,0 +1,15 @@
+---
+description: App Factory request router
+alwaysApply: true
+---
+
+Classify each request before acting:
+
+- ADVISORY: answer only; no edits or mutating commands.
+- PROPOSAL: analyze impact; do not implement.
+- INSPECTION: begin read-only and verify existing behavior.
+- EXECUTION: activate a task, follow scoped rules, verify, and checkpoint.
+
+When ambiguous, default to ADVISORY or PROPOSAL. A question is not authorization to modify the repository.
+
+For EXECUTION, read `AGENTS.md`, `.factory/current-state.yaml`, the active task, and the latest handoff. Inspect the current Git diff before editing. Load only task-relevant standards.
