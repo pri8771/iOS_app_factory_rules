@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "unregisteredRepositoriesAreOutOfScope": true,
+  "enrollingRepositories": {
+    "fleetAudited": true,
+    "blockingCompliance": false,
+    "documentationMirror": "optional"
+  },
+  "managedRepositories": {
+    "fleetAudited": true,
+    "blockingCompliance": true,
+    "documentationMirror": "required"
+  }
+}
