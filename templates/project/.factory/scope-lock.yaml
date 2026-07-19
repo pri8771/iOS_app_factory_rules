@@ -1,0 +1,14 @@
+schemaVersion: 1
+release: unassigned
+mustShip: []
+mayShip: []
+explicitlyExcluded: []
+approvalRequiredFor:
+  - new-backend
+  - user-accounts
+  - cloud-sync
+  - new-dependency
+  - new-permission
+  - new-data-collection
+  - pricing-change
+  - subscription-change
