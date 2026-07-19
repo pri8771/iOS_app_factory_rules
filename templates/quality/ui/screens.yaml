@@ -1,0 +1,17 @@
+schemaVersion: 1
+product: replace-me
+screens:
+  - id: SCREEN-HOME
+    name: Home
+    rootIdentifier: replace.home.root.container
+    fixtures: [empty, content, long-text]
+    requiredElements:
+      - identifier: replace.home.primary.button
+        role: button
+        states: [enabled]
+    navigation:
+      enterFrom: [app-launch]
+      exits:
+        - action: replace.home.primary.button
+          destination: SCREEN-DETAIL
+    prohibitedActions: []
