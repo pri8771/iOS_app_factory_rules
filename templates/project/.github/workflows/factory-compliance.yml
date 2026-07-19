@@ -1,0 +1,21 @@
+name: Factory Compliance
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  compliance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install factory CLI
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "git+https://github.com/pri8771/iOS_app_factory_rules.git@main"
+      - name: Check enrollment-aware compliance
+        run: factory compliance
