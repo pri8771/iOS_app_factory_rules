@@ -1,0 +1,10 @@
+schemaVersion: 1
+updatedAt: null
+updatedBy:
+  tool: factory-cli
+activeTask: null
+completed: []
+knownFailures: []
+nextRecommendedAction: Complete enrollment compliance checks
+workingTreeExpectedDirty: false
+lastHandoff: null
