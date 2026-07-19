@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ios-app-factory.local/schemas/agent-run.schema.json",
+  "title": "Factory Agent Run Receipt",
+  "type": "object",
+  "required": ["schemaVersion", "runId", "taskId", "role", "requested", "actual", "result"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "runId": {"type": "string", "pattern": "^RUN-"},
+    "taskId": {"type": "string"},
+    "role": {"type": "string"},
+    "requested": {
+      "type": "object",
+      "required": ["provider", "model"],
+      "properties": {
+        "provider": {"type": "string"},
+        "model": {"type": "string"},
+        "effort": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "actual": {
+      "type": "object",
+      "required": ["verification"],
+      "properties": {
+        "provider": {"type": ["string", "null"]},
+        "model": {"type": ["string", "null"]},
+        "effort": {"type": ["string", "null"]},
+        "verification": {"enum": ["provider-response", "ide-reported", "configuration-only", "unverified"]}
+      },
+      "additionalProperties": false
+    },
+    "scope": {"type": "object"},
+    "result": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": {"enum": ["completed", "partial", "failed", "blocked"]},
+        "artifact": {"type": ["string", "null"]}
+      }
+    },
+    "usage": {"type": "object"}
+  },
+  "additionalProperties": true
+}
