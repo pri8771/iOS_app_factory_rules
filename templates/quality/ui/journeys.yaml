@@ -1,0 +1,17 @@
+schemaVersion: 1
+product: replace-me
+journeys:
+  - id: JOURNEY-PRIMARY
+    name: Primary workflow
+    fixture: empty
+    launchArguments:
+      - UI_TEST_MODE=1
+      - UI_FIXTURE=empty
+    steps:
+      - launchApp: true
+      - assertVisible: replace.home.root.container
+      - tapOn: replace.home.primary.button
+      - assertVisible: replace.detail.root.container
+    persistenceCheck: false
+    destructive: false
+    externalAction: false
