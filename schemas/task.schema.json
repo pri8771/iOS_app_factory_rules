@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ios-app-factory.local/schemas/task.schema.json",
+  "title": "Factory Task",
+  "type": "object",
+  "required": ["schemaVersion", "id", "title", "status", "riskClass", "interactionClass", "scope", "successCriteria"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "id": {"type": "string", "minLength": 1},
+    "title": {"type": "string", "minLength": 1},
+    "status": {"enum": ["backlog", "active", "blocked", "review", "done"]},
+    "riskClass": {"enum": ["low", "medium", "high"]},
+    "interactionClass": {"enum": ["advisory", "proposal", "inspection", "execution"]},
+    "scope": {
+      "type": "object",
+      "required": ["allowedPaths", "forbiddenPaths"],
+      "properties": {
+        "allowedPaths": {"type": "array", "items": {"type": "string"}},
+        "forbiddenPaths": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "successCriteria": {"type": "array", "items": {"type": "string"}},
+    "verification": {"type": "array"}
+  },
+  "additionalProperties": true
+}

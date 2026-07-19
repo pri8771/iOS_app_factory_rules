@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "runId": "RUN-0001",
+  "taskId": "TASK-0001",
+  "role": "architecture-review",
+  "requested": {
+    "provider": "anthropic",
+    "model": "approved-architecture-model",
+    "effort": "high"
+  },
+  "actual": {
+    "provider": null,
+    "model": null,
+    "effort": null,
+    "verification": "configuration-only"
+  },
+  "scope": {
+    "read": [],
+    "write": []
+  },
+  "result": {
+    "status": "blocked",
+    "artifact": null
+  }
+}

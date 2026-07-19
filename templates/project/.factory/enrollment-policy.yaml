@@ -1,0 +1,16 @@
+schemaVersion: 1
+states:
+  unmanaged:
+    governed: false
+    fleetAudited: false
+    strictCompliance: false
+  enrolling:
+    governed: true
+    fleetAudited: true
+    strictCompliance: false
+    enforcementMode: onboarding
+  managed:
+    governed: true
+    fleetAudited: true
+    strictCompliance: true
+    enforcementMode: strict
