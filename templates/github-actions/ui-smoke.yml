@@ -1,0 +1,83 @@
+name: UI Smoke
+
+on:
+  pull_request:
+    paths:
+      - "**/*.swift"
+      - "quality/ui/**"
+      - ".maestro/**"
+      - ".github/workflows/ui-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ui-smoke-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  maestro:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, macOS, studio-ios]
+    timeout-minutes: 35
+    env:
+      SCHEME: REPLACE_WITH_SCHEME
+      APP_ID: REPLACE_WITH_BUNDLE_ID
+      SIMULATOR: iPhone 16 Pro
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          clean: true
+
+      - name: Verify prerequisites
+        run: |
+          command -v xcodebuild
+          command -v maestro
+          if [ -f project.yml ]; then command -v xcodegen; fi
+
+      - name: Generate project
+        run: |
+          if [ -f project.yml ]; then xcodegen generate; fi
+
+      - name: Boot simulator
+        run: |
+          xcrun simctl boot "$SIMULATOR" 2>/dev/null || true
+          open -a Simulator
+          xcrun simctl bootstatus "$SIMULATOR" -b
+
+      - name: Build and install app
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p quality/evidence/ci
+          DERIVED_DATA="$RUNNER_TEMP/DerivedData"
+          xcodebuild build \
+            -scheme "$SCHEME" \
+            -destination "platform=iOS Simulator,name=$SIMULATOR" \
+            -derivedDataPath "$DERIVED_DATA" \
+            CODE_SIGNING_ALLOWED=NO \
+            2>&1 | tee quality/evidence/ci/ui-build.log
+          APP_PATH=$(find "$DERIVED_DATA/Build/Products" -path "*-iphonesimulator/*.app" -maxdepth 3 | head -1)
+          test -n "$APP_PATH"
+          xcrun simctl install "$SIMULATOR" "$APP_PATH"
+
+      - name: Run deterministic Maestro flows
+        shell: bash
+        run: |
+          set -o pipefail
+          FLOW_DIR=.maestro
+          if [ ! -d "$FLOW_DIR" ]; then FLOW_DIR=quality/ui/runnable; fi
+          test -d "$FLOW_DIR"
+          maestro test "$FLOW_DIR" 2>&1 | tee quality/evidence/ci/maestro.log
+
+      - name: Upload UI evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-smoke-${{ github.sha }}
+          path: |
+            quality/evidence/ci/
+            ~/.maestro/tests/**
+          if-no-files-found: warn
+          retention-days: 14

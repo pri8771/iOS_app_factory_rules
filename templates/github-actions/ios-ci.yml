@@ -1,0 +1,66 @@
+name: iOS Build and Unit Tests
+
+on:
+  pull_request:
+    paths:
+      - "**/*.swift"
+      - "**/*.xcodeproj/**"
+      - "**/*.xcworkspace/**"
+      - "**/Package.swift"
+      - "project.yml"
+      - "quality/**"
+      - ".github/workflows/ios-ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ios-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, macOS, studio-ios]
+    timeout-minutes: 35
+    env:
+      SCHEME: REPLACE_WITH_SCHEME
+      DESTINATION: platform=iOS Simulator,name=iPhone 16 Pro
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          clean: true
+
+      - name: Report toolchain
+        run: |
+          xcodebuild -version
+          swift --version
+
+      - name: Generate project when configured
+        run: |
+          if [ -f project.yml ]; then
+            command -v xcodegen >/dev/null || { echo "xcodegen is required"; exit 1; }
+            xcodegen generate
+          fi
+
+      - name: Build and test
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p quality/evidence/ci
+          xcodebuild test \
+            -scheme "$SCHEME" \
+            -destination "$DESTINATION" \
+            -resultBundlePath quality/evidence/ci/TestResults.xcresult \
+            CODE_SIGNING_ALLOWED=NO \
+            2>&1 | tee quality/evidence/ci/xcodebuild.log
+
+      - name: Upload build evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-test-${{ github.sha }}
+          path: quality/evidence/ci/
+          if-no-files-found: error
+          retention-days: 14
