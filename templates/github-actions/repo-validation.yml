@@ -1,0 +1,47 @@
+name: Repository Validation
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: repo-validation-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate factory files
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p quality/evidence/ci
+          {
+            python -m compileall -q scripts tests 2>/dev/null || true
+            if [ -f scripts/validate_repo.py ]; then python scripts/validate_repo.py; fi
+            if [ -f scripts/check_standard_drift.py ]; then python scripts/check_standard_drift.py; fi
+          } 2>&1 | tee quality/evidence/ci/repository-validation.log
+
+      - name: Upload validation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: repository-validation-${{ github.sha }}
+          path: quality/evidence/ci/
+          if-no-files-found: warn
+          retention-days: 14
