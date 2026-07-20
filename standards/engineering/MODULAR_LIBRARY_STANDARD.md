@@ -4,7 +4,7 @@
 
 Build cross-cutting capabilities behind small, generic, testable boundaries so they can become standalone libraries without forcing every helper into a package immediately.
 
-The goal is **library-ready by default**, not package proliferation.
+**Library-ready by default, not necessarily a standalone library immediately.** The goal is code that could be extracted cleanly, not package proliferation.
 
 ## What should be designed for reuse
 

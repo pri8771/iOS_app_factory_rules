@@ -77,6 +77,15 @@ For an existing repository, use `--mode existing`.
 
 The remote initializer clones a fresh temporary copy of this repository, runs the bootstrap, installs local navigation and agent files, copies a reusable-library catalog snapshot, and verifies registration. It does not move the app into this repository.
 
+## Upgrade an already-registered project
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/pri8771/iOS_app_factory_rules/main/scripts/remote-init.sh | \
+  bash -s -- --target "$PWD" --mode upgrade
+```
+
+Add `--dry-run` to preview the change first. Upgrade refreshes central-controlled files (`.factory/standard-lock.json`, `.factory/library-catalog.json`), forward-fills any required registration file the project is missing, and never overwrites product-authored documentation, source code, or a customized `.factory/repository-map.json`. It is idempotent — running it again with nothing to change reports `Already up to date`. See [`playbooks/UPGRADE_REGISTERED_PROJECT.md`](playbooks/UPGRADE_REGISTERED_PROJECT.md).
+
 ## Reuse-first development
 
 Before implementing networking, persistence, StoreKit, export, logging, accessibility helpers, testing support, or other cross-cutting infrastructure, agents must inspect:
@@ -115,6 +124,7 @@ See [`standards/documentation/LLM_DOCUMENTATION_STANDARD.md`](standards/document
 - Repository model: [`governance/REPOSITORY_MODEL.md`](governance/REPOSITORY_MODEL.md)
 - New product repository: [`playbooks/CREATE_NEW_PRODUCT_REPOSITORY.md`](playbooks/CREATE_NEW_PRODUCT_REPOSITORY.md)
 - Existing project onboarding: [`playbooks/REGISTER_EXISTING_PROJECT.md`](playbooks/REGISTER_EXISTING_PROJECT.md)
+- Upgrade a registered project: [`playbooks/UPGRADE_REGISTERED_PROJECT.md`](playbooks/UPGRADE_REGISTERED_PROJECT.md)
 - Quality rulebook: [`standards/quality/VIBE_CODING_QUALITY_RULEBOOK.md`](standards/quality/VIBE_CODING_QUALITY_RULEBOOK.md)
 
-Current standard version: `0.4.0`
+Current standard version: `0.5.0`

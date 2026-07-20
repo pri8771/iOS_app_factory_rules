@@ -23,9 +23,30 @@ required = [
     target / ".factory/AGENTS.factory.md",
     target / "quality/quality-manifest.json",
     target / "docs/README.md",
+    target / "docs/STATUS.md",
+    target / "docs/ARCHITECTURE.md",
+    target / "docs/FEATURES.md",
+    target / "docs/BUGS.md",
+    target / "docs/DECISIONS.md",
+    target / "docs/RISKS.md",
+    target / "docs/ASSUMPTIONS.md",
+    target / "docs/TEST_PLAN.md",
+    target / "docs/RELEASE_CHECKLIST.md",
+    target / "docs/HANDOFF.md",
     target / "docs/REUSABLE_COMPONENTS.md",
 ]
+required_directories = [
+    target / "quality/feature-contracts",
+    target / "quality/completion-reports",
+    target / "quality/evidence",
+    target / "quality/waivers",
+]
 missing = [str(path.relative_to(target)) for path in required if not path.exists()]
+missing += [
+    str(path.relative_to(target)) + "/"
+    for path in required_directories
+    if not path.is_dir()
+]
 if missing:
     raise SystemExit("Unregistered or incomplete project; missing: " + ", ".join(missing))
 

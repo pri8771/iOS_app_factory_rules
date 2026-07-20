@@ -33,6 +33,7 @@
     "featureContracts": "quality/feature-contracts",
     "completionReports": "quality/completion-reports",
     "qualityEvidence": "quality/evidence",
+    "waivers": "quality/waivers",
     "libraryCatalog": ".factory/library-catalog.json",
     "reusableComponents": "docs/REUSABLE_COMPONENTS.md"
   },

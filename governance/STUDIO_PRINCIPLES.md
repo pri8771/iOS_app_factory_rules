@@ -1,3 +1,17 @@
+---
+id: GOV-STUDIO-PRINCIPLES
+canonicalFor: studio-principles
+status: active
+lastVerified: 2026-07-17
+readWhen:
+  - resolving a tradeoff not covered by a specific standard
+  - onboarding to the central repository
+related:
+  - governance/REPOSITORY_MODEL.md
+  - standards/quality/VIBE_CODING_QUALITY_RULEBOOK.md
+supersedes: []
+---
+
 # Studio Principles
 
 1. Build real products, not demonstrations that only resemble products.

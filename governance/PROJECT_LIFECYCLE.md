@@ -1,3 +1,17 @@
+---
+id: GOV-PROJECT-LIFECYCLE
+canonicalFor: project-and-work-item-lifecycle
+status: active
+lastVerified: 2026-07-17
+readWhen:
+  - checking which lifecycle stage a product or work item is in
+  - deciding what a status transition requires
+related:
+  - governance/DEFINITION_OF_DONE.md
+  - docs/CENTRAL_REPOSITORY_BLUEPRINT.md
+supersedes: []
+---
+
 # Project Lifecycle
 
 ## Product lifecycle

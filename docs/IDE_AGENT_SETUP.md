@@ -65,6 +65,16 @@ Run:
 
 The project starts at `onboarding_existing`, and agents are instructed to inventory and baseline the codebase before restructuring it.
 
+## Upgrade
+
+Run when a registered project's `.factory/standard-lock.json` is behind the current central `VERSION`:
+
+```bash
+./scripts/upgrade-project.sh --target /path/to/project
+```
+
+Upgrade refreshes central-controlled files, forward-fills any required registration file the project is missing, and never overwrites product-authored documentation or a customized `.factory/repository-map.json`. Add `--dry-run` to preview first. See `playbooks/UPGRADE_REGISTERED_PROJECT.md`.
+
 ## Verification
 
 From this repository, run:
